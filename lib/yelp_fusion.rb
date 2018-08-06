@@ -1,7 +1,8 @@
 require "yelp_fusion/version"
+require "yelp_fusion/client"
 
 module YelpFusion
 	def self.client
-		"new client"
+		@client ||= YelpFusion::Client.new
 	end
 end
