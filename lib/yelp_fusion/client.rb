@@ -1,5 +1,13 @@
+require "http"
+
 module YelpFusion
 	class Client
+		API_HOST = "https://api.yelp.com"
+		SEARCH_PATH = "/v3/businesses/search"
+		BUSINESS_PATH = "/v3/businesses/"
+
+		SEARCH_LIMIT = 5
+
 		attr_accessor :auth_token
 
 		def initialize(auth_token = nil)
@@ -14,6 +22,20 @@ module YelpFusion
 			else
 				@auth_token_freeze = true
 			end
+		end
+
+		def search(term, location)
+			url = "#{API_HOST}#{SEARCH_PATH}"
+			params = {
+			    term: term,
+			    location: location,
+			    limit: SEARCH_LIMIT
+			}
+			connection.get(url, params: params)
+		end
+
+		def connection
+			HTTP.auth("Bearer #{@auth_token}")
 		end
 	end
 end 
